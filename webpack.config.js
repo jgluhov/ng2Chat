@@ -60,7 +60,7 @@ module.exports = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin("styles.css", {disable: process.env.NODE_ENV == 'development'}),
-    new HtmlWebpackPlugin({template: 'client/src/templates/index.html', inject: false})
+    new HtmlWebpackPlugin({template: path.join('client','src','templates','index.html'), inject: false})
   ],
 
   devServer: {
