@@ -2,6 +2,10 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "noImplicitAny": true,
     "sourceMap": true
   },
   "exclude": [
@@ -9,6 +13,8 @@
   ],
   "files": [
     "typings/tsd.d.ts",
-    "server/index.ts"
+    "server/index.ts",
+    "client/src/boot.ts",
+    "client/src/app.component.ts"
   ]
 }

@@ -12,20 +12,24 @@ module.exports = {
   context: APP,
 
   entry: {
+    Zone:['zone.js'],
+    reflect: ['reflect-metadata'],
     app: [
       'webpack-dev-server/client?http://localhost:8080',
       'webpack/hot/dev-server',
-      './src/app'
+      './src/boot'
     ]
   },
 
   output: {
     path: APP + '/public',
-    filename: 'bundle.js'
+    filename: '[name].js',
+    library: '[name]'
   },
 
   resolve: {
-    extensions: ['', '.js', '.ts']
+    extensions: ['', '.js', '.ts'],
+    modulesDirectories: ['node_modules']
   },
 
   devtool: '#inline-source-map',
@@ -35,6 +39,9 @@ module.exports = {
       {
         test: /\.ts$/,
         loader: 'ts',
+        query: {
+          ignoreDiagnostics: [2403,2300,2374,2375,2420]
+        },
         exclude: /node_modules/
       }
     ]
@@ -42,5 +49,9 @@ module.exports = {
 
   plugins: [
     new webpack.HotModuleReplacementPlugin()
-  ]
+  ],
+
+  devServer: {
+    contentBase: __dirname
+  }
 };
