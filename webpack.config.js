@@ -37,6 +37,13 @@ module.exports = {
   devtool: '#inline-source-map',
 
   module: {
+    preLoaders: [
+      {
+        test: /\.ts$/,
+        loader: 'tslint-loader',
+        exclude: [/node_modules/]
+      }
+    ],
     loaders: [
       {
         test: /\.ts$/,
@@ -44,7 +51,7 @@ module.exports = {
         query: {
           ignoreDiagnostics: [2403, 2300, 2374, 2375, 2420]
         },
-        exclude: /node_modules/
+        exclude: [/node_modules/]
       },
       {
         test: /\.css$/,
@@ -55,6 +62,11 @@ module.exports = {
         loader: 'file'
       }
     ]
+  },
+
+  tslint: {
+    emitErrors: true,
+    failOnHint: false
   },
 
   plugins: [
