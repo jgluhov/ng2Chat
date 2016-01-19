@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --content-base client/public/ --hot"
+    "start:development": "NODE_ENV=development webpack-dev-server --content-base client/public/ --hot",
+    "start:production": "NODE_ENV=production webpack-dev-server --content-base client/public/ --hot"
   },
   "keywords": [],
   "author": "",
@@ -17,9 +18,15 @@
     "reflect-metadata": "^0.1.2",
     "rxjs": "^5.0.0-beta.0",
     "socket.io": "^1.4.4",
+    "uikit": "^2.24.3",
     "zone.js": "^0.5.10"
   },
   "devDependencies": {
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.8.5",
+    "html-webpack-plugin": "^1.7.0",
+    "style-loader": "^0.13.0",
     "ts-loader": "^0.7.2",
     "typescript": "^1.7.5",
     "webpack": "^1.12.11",

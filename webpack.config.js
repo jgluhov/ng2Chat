@@ -4,15 +4,17 @@
 'use strict';
 
 var webpack = require('webpack'),
+  ExtractTextPlugin = require("extract-text-webpack-plugin"),
+  HtmlWebpackPlugin = require('html-webpack-plugin'),
   path = require('path');
 
-var APP = __dirname + '/client';
+var APP = path.join(__dirname, 'client');
 
 module.exports = {
   context: APP,
 
   entry: {
-    Zone:['zone.js'],
+    Zone: ['zone.js'],
     reflect: ['reflect-metadata'],
     app: [
       'webpack-dev-server/client?http://localhost:8080',
@@ -22,13 +24,13 @@ module.exports = {
   },
 
   output: {
-    path: APP + '/public',
+    path: path.join(APP, 'public'),
     filename: '[name].js',
     library: '[name]'
   },
 
   resolve: {
-    extensions: ['', '.js', '.ts'],
+    extensions: ['', '.js', '.ts', '.css', '.html'],
     modulesDirectories: ['node_modules']
   },
 
@@ -40,15 +42,25 @@ module.exports = {
         test: /\.ts$/,
         loader: 'ts',
         query: {
-          ignoreDiagnostics: [2403,2300,2374,2375,2420]
+          ignoreDiagnostics: [2403, 2300, 2374, 2375, 2420]
         },
         exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract('style', 'css')
+      },
+      {
+        test: /\.(ttf|woff|woff2)/,
+        loader: 'file'
       }
     ]
   },
 
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new ExtractTextPlugin("styles.css", {disable: process.env.NODE_ENV == 'development'}),
+    new HtmlWebpackPlugin({template: 'client/src/templates/index.html', inject: false})
   ],
 
   devServer: {

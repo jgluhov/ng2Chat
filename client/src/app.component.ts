@@ -1,3 +1,4 @@
+import 'uikit/dist/css/uikit.css'
 import {Component} from 'angular2/core';
 
 @Component({
