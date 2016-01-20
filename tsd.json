@@ -28,6 +28,12 @@
     },
     "angular2/angular2-2.0.0-alpha.39.d.ts": {
       "commit": "93bae1bb4c887c1375a4c1f0c3bb849ff06b8ac6"
+    },
+    "rx/rx.d.ts": {
+      "commit": "fab683ca77d0286b9d51aba6375deaceb41b22f5"
+    },
+    "faker/faker.d.ts": {
+      "commit": "fab683ca77d0286b9d51aba6375deaceb41b22f5"
     }
   }
 }

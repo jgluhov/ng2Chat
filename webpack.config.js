@@ -16,6 +16,7 @@ module.exports = {
   entry: {
     Zone: ['zone.js'],
     reflect: ['reflect-metadata'],
+    rxjs: ['rxjs'],
     app: [
       'webpack-dev-server/client?http://localhost:8080',
       'webpack/hot/dev-server',
