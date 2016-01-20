@@ -1,7 +1,7 @@
 {
   "name": "ng2Chat",
   "version": "1.0.0",
-  "description": "",
+  "description": "ng2Chat app with using JWT",
   "main": "index.js",
   "scripts": {
     "start:development": "NODE_ENV=development webpack-dev-server --content-base client/public/ --hot",
@@ -24,6 +24,7 @@
   "devDependencies": {
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "faker": "^3.0.1",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^1.7.0",
     "style-loader": "^0.13.0",

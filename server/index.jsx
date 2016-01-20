@@ -1,13 +1,20 @@
 /**
  * Created by jgluhov on 19/01/16.
  */
-import * as express from 'express';
-import * as http from 'http';
-import * as socket from 'socket.io';
+'use strict';
+
+let express = require('express'),
+   http = require('http'),
+   socket = require('socket.io'),
+   faker = require('faker');
 
 let app = express();
 let server = http.createServer(app);
 let io = socket(server);
+
+app.get('/random-user', (req, res) => {
+   res.json(faker.helpers.userCard());
+});
 
 app.get('/', (req, res) => {
    res.sendStatus(200);
