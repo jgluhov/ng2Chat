@@ -1,8 +1,8 @@
 /**
  * Created by jgluhov on 21/01/16.
  */
-import {Component} from 'angular2/core';
-import {HTTP_PROVIDERS} from 'angular2/http';
+import {Component, Injector} from 'angular2/core';
+import {HTTP_PROVIDERS, Http} from 'angular2/http';
 import {
     FORM_DIRECTIVES,
     ControlGroup,
@@ -10,6 +10,7 @@ import {
     AbstractControl,
     Control
 } from 'angular2/common';
+import {RouteData, CanActivate} from 'angular2/router';
 
 import {RandomUserService} from '../services/random.user.service';
 import {UserService} from '../services/user.service';
@@ -61,20 +62,39 @@ import {IUser} from '../services/user.interface';
     `
 })
 
+@CanActivate((to) => {
+    return new Promise((resolve) => {
+        let injector = Injector.resolveAndCreate([UserService, HTTP_PROVIDERS, TokenService]);
+        let userService = injector.get(UserService);
+        userService.user$.subscribe((user:Object) => {
+            to.routeData.data['user'] = user;
+            resolve(true);
+        }, (error:Object) => {
+            to.routeData.data['user'] = null;
+            console.log(error);
+            resolve(true);
+        });
+
+        userService.getUser();
+    })
+})
+
 export class HomeComponent {
-    randomUser: Object;
-    user: IUser.UserCard;
+    randomUser:Object;
+    user:IUser.UserCard;
 
-    loginForm: ControlGroup;
-    username: AbstractControl;
-    password: AbstractControl;
+    loginForm:ControlGroup;
+    username:AbstractControl;
+    password:AbstractControl;
 
-    constructor(
-        public randomUserService: RandomUserService,
-        public userService: UserService,
-        public tokenService: TokenService,
-        public fb: FormBuilder
-    ) {
+    constructor(public randomUserService:RandomUserService,
+                public userService:UserService,
+                public tokenService:TokenService,
+                public fb:FormBuilder,
+                public routeData:RouteData)
+    {
+        this.user = routeData.data['user'];
+
         this.loginForm = fb.group({
             'username': [''],
             'password': ['']
@@ -85,7 +105,7 @@ export class HomeComponent {
 
         userService.user$.subscribe((user:IUser.UserCard) => {
             this.user = user;
-            if(user.token)
+            if (user.token)
                 this.tokenService.token = user.token;
         });
 
@@ -94,11 +114,11 @@ export class HomeComponent {
         });
     }
 
-    ngOnInit() {
-        this.userService.getUser();
-    }
+    //ngOnInit() {
+    //    this.userService.getUser();
+    //}
 
-    onSubmit(credentials: IUser.Credentials) {
+    onSubmit(credentials:IUser.Credentials) {
         this.userService.signin(credentials);
     }
 

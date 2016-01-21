@@ -1,7 +1,7 @@
 /**
  * Created by jgluhov on 20/01/16.
  */
-import {Injectable} from 'angular2/core';
+import {Injectable, Inject} from 'angular2/core';
 import {Http, Headers} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -13,10 +13,9 @@ import {IUser} from './user.interface';
 export class UserService {
     API_URL = 'http://localhost:3000';
     user$:Observable<Array<IUser.UserCard>>;
-
     private _userObserver:any;
 
-    constructor(private http:Http, public tokenService:TokenService) {
+    constructor(@Inject(Http) public http:Http, @Inject(TokenService) public tokenService:TokenService) {
         // Create Observable stream to output our data
         this.user$ = new Observable((observer:any) =>
             this._userObserver = observer).share();
@@ -32,6 +31,8 @@ export class UserService {
                 .subscribe(data => {
                     this._userObserver.next(data);
                 }, error => console.log(error.json().message))
+        } else {
+            this._userObserver.error({message:`auth-token is not provided.`});
         }
     }
 
