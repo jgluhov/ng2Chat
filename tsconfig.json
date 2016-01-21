@@ -20,6 +20,7 @@
     "client/src/services/user.service.ts",
     "client/src/services/user.interface.ts",
     "client/src/http.options.ts",
-    "client/src/services/token.service.ts"
+    "client/src/services/token.service.ts",
+    "client/src/pages/home.component.ts"
   ]
 }
