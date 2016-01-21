@@ -6,8 +6,6 @@ import {Http} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/share'
-import {Subscriber} from "rxjs/Subscriber";
-import {Subject} from "rxjs/Subject";
 
 @Injectable()
 export class RandomUserService {
@@ -15,8 +13,8 @@ export class RandomUserService {
 
     randomUsers$:Observable<Array<Faker.UserCard>>;
 
-    private _usersObserver: any;
-    private _dataStore: {
+    private _usersObserver:any;
+    private _dataStore:{
         randomUsers: Array<Faker.UserCard>
     };
 
@@ -29,12 +27,14 @@ export class RandomUserService {
     }
 
     getUser() {
-        this.http.get(`${this.API_URL}/random-user`).map(res => res.json()).subscribe(data => {
-            // add user to our users store
-            this._dataStore.randomUsers.push(data);
+        this.http.get(`${this.API_URL}/random-user`)
+            .map(res => res.json())
+            .subscribe(data => {
+                // add user to our users store
+                this._dataStore.randomUsers.push(data);
 
-            // Push the new list of users into the Observable stream
-            this._usersObserver.next(data);
-        })
+                // Push the new list of users into the Observable stream
+                this._usersObserver.next(data);
+            })
     }
 }

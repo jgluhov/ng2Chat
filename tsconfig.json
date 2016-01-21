@@ -16,6 +16,9 @@
     "server/index.jsx",
     "client/src/boot.ts",
     "client/src/app.component.ts",
-    "client/src/services/random.user.service.ts"
+    "client/src/services/random.user.service.ts",
+    "client/src/services/user.service.ts",
+    "client/src/services/user.interface.ts",
+    "client/src/http.options.ts"
   ]
 }

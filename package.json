@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "angular2": "^2.0.0-beta.1",
+    "body-parser": "^1.14.2",
     "cors": "^2.7.1",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.13",
@@ -28,6 +29,7 @@
     "faker": "^3.0.1",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^1.7.0",
+    "morgan": "^1.6.1",
     "style-loader": "^0.13.0",
     "ts-loader": "^0.7.2",
     "tslint": "^3.2.2",
