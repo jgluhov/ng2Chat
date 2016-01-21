@@ -2,33 +2,54 @@
  * Created by jgluhov on 20/01/16.
  */
 import {Injectable} from 'angular2/core';
-import {Http} from 'angular2/http';
+import {Http, Headers} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
+import {TokenService} from './token.service';
 import {IUser} from './user.interface';
 
 @Injectable()
 export class UserService {
     API_URL = 'http://localhost:3000';
-
-    user$: Observable<Array<IUser>>;
+    user$:Observable<Array<IUser.UserCard>>;
 
     private _userObserver:any;
 
-    constructor(private http:Http) {
+    constructor(private http:Http, public tokenService:TokenService) {
         // Create Observable stream to output our data
         this.user$ = new Observable((observer:any) =>
             this._userObserver = observer).share();
 
     }
 
-    login(user: IUser) {
-        this.http.post(`${this.API_URL}/login`, JSON.stringify(user))
+    getUser() {
+        let headers = new Headers();
+        if (this.tokenService.token) {
+            headers.append('Authorization', `Bearer ${this.tokenService.token}`);
+            this.http.get(`${this.API_URL}/me`, {headers: headers})
+                .map(res => res.json())
+                .subscribe(data => {
+                    this._userObserver.next(data);
+                }, error => console.log(error.json().message))
+        }
+    }
+
+    signin(credentials:IUser.Credentials) {
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+
+        this.http.post(`${this.API_URL}/login`, JSON.stringify(credentials), {
+                headers: headers
+            })
             .map(res => res.json())
             .subscribe(data => {
                 // Push the new list of users into the Observable stream
                 this._userObserver.next(data);
-            }, error => console.log('Could not logged in'))
+            }, error => console.log(error.json().message))
+    }
+
+    signout() {
+        this.tokenService.token = ''
     }
 }

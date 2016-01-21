@@ -2,10 +2,11 @@
  * Created by jgluhov on 20/01/16.
  */
 import {Injectable} from 'angular2/core';
-import {Http} from 'angular2/http';
+import {Http, Headers} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map'
 import 'rxjs/add/operator/share'
+import {TokenService} from './token.service';
 
 @Injectable()
 export class RandomUserService {
@@ -18,7 +19,7 @@ export class RandomUserService {
         randomUsers: Array<Faker.UserCard>
     };
 
-    constructor(private http:Http) {
+    constructor(private http:Http, public tokenService:TokenService) {
         // Create Observable stream to output our data
         this.randomUsers$ = new Observable((observer:any) =>
             this._usersObserver = observer).share();
@@ -27,7 +28,14 @@ export class RandomUserService {
     }
 
     getUser() {
-        this.http.get(`${this.API_URL}/random-user`)
+        let headers = new Headers();
+        if(this.tokenService.token) {
+            headers.append('Authorization', `Bearer ${this.tokenService.token}`);
+        }
+
+        this.http.get(`${this.API_URL}/random-user`, {
+                headers: headers
+            })
             .map(res => res.json())
             .subscribe(data => {
                 // add user to our users store

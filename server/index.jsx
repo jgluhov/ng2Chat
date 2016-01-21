@@ -9,7 +9,9 @@ let express = require('express'),
   logger = require('morgan'),
   cors = require('cors'),
   bodyParser = require('body-parser'),
-  faker = require('faker');
+  faker = require('faker'),
+  jwt = require('jsonwebtoken'),
+  expressJwt = require('express-jwt');
 
 let app = express();
 let server = http.createServer(app);
@@ -20,17 +22,24 @@ let user = {
   password: 'Mathemat1cs'
 };
 
+let jwtSecret = 'Mathemat1c1an';
+
 app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.json());
+app.use(expressJwt({ secret: jwtSecret }).unless({ path: ['/login']}));
 
 app.get('/random-user', (req, res) => {
   res.json(faker.helpers.userCard());
 });
 
-app.post('/login', (req, res) => {
-  console.dir(req.body);
-  res.sendStatus(200);
+app.post('/login', authenticate, (req, res) => {
+  var token = jwt.sign({ username: user.username }, jwtSecret);
+  res.json({ credentials: user, token: token });
+});
+
+app.get('/me', (req, res) => {
+  res.json({ credentials: user })
 });
 
 io.on('connection', (socket) => {
@@ -43,15 +52,13 @@ app.listen(3000, () => {
 
 function authenticate(req, res, next) {
   let body = req.body;
-  // TODO: Need to get req body
-  console.log(req.body.json)
 
   if (!body.username || !body.password) {
-    return res.status(400).end('Must provide username or password');
+    return res.status(400).json({ message: 'Must provide username or password'});
   }
 
   if (body.username !== user.username || body.password !== user.password) {
-    return res.status(401).end('Username or password incorrect')
+    return res.status(401).json({ message: 'Username or password incorrect'});
   }
   next();
 }
