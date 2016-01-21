@@ -1,6 +1,12 @@
 import 'uikit/dist/css/uikit.css'
 import {Component, provide} from 'angular2/core';
-import {ROUTER_DIRECTIVES, RouteConfig, ROUTER_PROVIDERS, LocationStrategy, HashLocationStrategy} from 'angular2/router';
+import {
+    ROUTER_DIRECTIVES,
+    RouteConfig,
+    ROUTER_PROVIDERS,
+    LocationStrategy,
+    HashLocationStrategy
+} from 'angular2/router';
 import {HomeComponent} from './pages/home.component';
 
 @Component({
